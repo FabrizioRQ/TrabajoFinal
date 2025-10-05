@@ -1,0 +1,10 @@
+package com.example.api.trabajofinal.repositories;
+
+import com.example.api.trabajofinal.entities.Pago;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PagoRepository extends JpaRepository<Pago,Long> {
+    public List<Pago> findByIdUsuario_Id(Long usuarioId);
+}
