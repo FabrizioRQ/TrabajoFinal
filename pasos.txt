@@ -1,0 +1,8 @@
+entities
+dtos
+repositories (queris; reportes)
+interfaces
+services
+config
+controllers
+probar en swagger
