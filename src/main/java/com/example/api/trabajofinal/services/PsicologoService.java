@@ -26,20 +26,16 @@ public class PsicologoService implements PsicologoInterface {
 
     @Override
     public PsicologoDTO registrarPsicologo(PsicologoDTO psicologoDTO) {
-        // Validar que el usuario exista
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(psicologoDTO.getIdUsuario());
         if (usuarioOpt.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado con ID: " + psicologoDTO.getIdUsuario());
         }
 
         Usuario usuario = usuarioOpt.get();
-
-        // Validar que el usuario esté activo (estado "ACTIVE")
         if (!"ACTIVE".equals(usuario.getEstado())) {
             throw new RuntimeException("El usuario no está activo. Estado actual: " + usuario.getEstado());
         }
 
-        // Validar que el usuario no tenga ya el rol de psicólogo
         if (psicologoRepository.existsByIdUsuario(psicologoDTO.getIdUsuario())) {
             throw new RuntimeException("El usuario ya tiene asignado el rol de psicólogo");
         }
