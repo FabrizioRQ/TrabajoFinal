@@ -40,7 +40,7 @@ public class PsicologoService implements PsicologoInterface {
             throw new RuntimeException("El usuario ya tiene asignado el rol de psicólogo");
         }
 
-        // Validar que no exista otro psicólogo con el mismo número de colegiatura
+
         if (psicologoRepository.existsByNumeroColegiatura(psicologoDTO.getNumeroColegiatura())) {
             throw new RuntimeException("Ya existe un psicólogo con el número de colegiatura: " + psicologoDTO.getNumeroColegiatura());
         }
