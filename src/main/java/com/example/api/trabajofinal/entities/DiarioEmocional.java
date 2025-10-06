@@ -17,11 +17,11 @@ public class DiarioEmocional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_diario", nullable = false)
     private Long id;
-
+    // Fecha en la que se registró la emoción
     @NotNull
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
-
+    // Emoción registrada en el día (por ejemplo: alegría, miedo, sorpresa, etc.)
     @Size(max = 100)
     @NotNull
     @Column(name = "emocion_registrada", nullable = false, length = 100)
