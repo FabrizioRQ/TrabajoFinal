@@ -28,6 +28,7 @@ public class PadreController {
     }
 
     @GetMapping("/{id}")
+    // Revisión de lógica: Uso de map y orElse para manejo eficiente de Optional
     public ResponseEntity<PadreDTO> obtenerPadrePorId(@PathVariable Long id) {
         Optional<PadreDTO> padre = padreService.obtenerPadrePorId(id);
         return padre.map(ResponseEntity::ok)
