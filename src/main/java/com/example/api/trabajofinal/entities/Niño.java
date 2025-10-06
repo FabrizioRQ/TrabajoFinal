@@ -26,16 +26,19 @@ public class Niño {
     private Usuario idUsuario;
 
     @NotNull
+    // Relación muchos-a-uno con la entidad
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_avatar", nullable = false)
     private Avatar idAvatar;
 
     @NotNull
+    // Relación muchos-a-uno con la entidad
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_psicologo", nullable = false)
     private Psicologo idPsicologo;
 
     @NotNull
+    // Relación muchos-a-uno con la entidad
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_padre", nullable = false)
     private Padre idPadre;
