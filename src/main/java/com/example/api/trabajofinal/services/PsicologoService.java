@@ -45,7 +45,6 @@ public class PsicologoService implements PsicologoInterface {
             throw new RuntimeException("Ya existe un psicólogo con el número de colegiatura: " + psicologoDTO.getNumeroColegiatura());
         }
 
-        // Validar datos adicionales (licencia profesional, especialidad)
         if (psicologoDTO.getEspecialidad() == null || psicologoDTO.getEspecialidad().trim().isEmpty()) {
             throw new RuntimeException("La especialidad es requerida");
         }
