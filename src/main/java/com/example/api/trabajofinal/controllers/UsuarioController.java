@@ -21,18 +21,18 @@ import java.util.Map;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioService usuarioService; // Servicio principal para lógica de negocio de usuarios
 
     @Autowired
-    private RateLimiterService rateLimiterService;
+    private RateLimiterService rateLimiterService; // Servicio para limitar solicitudes y evitar abusos (rate limiting)
 
     @Autowired
-    private UsuarioRepository usuarioRepositorie;
+    private UsuarioRepository usuarioRepositorie; // Acceso directo al repositorio de usuarios
 
     @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepository; // Repositorio para manejar tokens de recuperación
 
-
+    // Obtiene el perfil de un usuario específico (solo accesible por administradores)
     @GetMapping("/{idUsuario}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> obtenerPerfil(@PathVariable Long idUsuario) {
@@ -49,7 +49,7 @@ public class UsuarioController {
         }
     }
 
-
+    // Verifica si un correo electrónico ya está registrado
     @GetMapping("/existe/{correo}")
     public ResponseEntity<?> verificarCorreoExistente(@PathVariable String correo) {
         try {
@@ -65,20 +65,22 @@ public class UsuarioController {
         }
     }
 
+    //Inicia el proceso de recuperación de contraseña
+    // Se valida el correo y se simula el envío de un enlace con token temporal
     @PostMapping("/recuperacion/{correo}")
     public ResponseEntity<?> solicitarRecuperacionRealista(@PathVariable String correo) {
         try {
             System.out.println("SOLICITUD RECUPERACIÓN REALISTA PARA: " + correo);
-
+            // Validación básica del correo
             if (correo == null || !correo.contains("@") || correo.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("Correo electrónico no válido");
             }
-
+             // Verificación de límites de solicitudes
             String rateLimitKey = "recovery:" + correo;
             if (rateLimiterService.isBlocked(rateLimitKey)) {
                 return ResponseEntity.badRequest().body("Demasiadas solicitudes. Intente más tarde.");
             }
-
+            // Búsqueda del usuario activo
             Usuario usuario = usuarioRepositorie.findByCorreoElectronico(correo);
             if (usuario == null || !"ACTIVE".equals(usuario.getEstado())) {
                 System.out.println("Usuario no encontrado o inactivo: " + correo);
@@ -87,11 +89,13 @@ public class UsuarioController {
                 response.put("simulacion", "Registre o ingrese su correo de nuevo");
                 return ResponseEntity.ok(response);
             }
-
+            
+            // Creación de token de recuperación
             PasswordResetToken token = usuarioService.crearTokenParaUsuario(usuario);
 
             String enlaceRecuperacion = "http://localhost:8080/api/usuarios/restablecer-con-token?token=" + token.getToken();
-
+            
+            // Simulación del envío del correo electrónico
             System.out.println("===  SIMULACIÓN DE EMAIL ===");
             System.out.println("Para: " + correo);
             System.out.println("Asunto: Restablecimiento de Contraseña");
@@ -99,9 +103,11 @@ public class UsuarioController {
             System.out.println("Enlace: " + enlaceRecuperacion);
             System.out.println("Token (solo para pruebas): " + token.getToken());
             System.out.println("Este enlace expira en 24 horas.");
-
+            
+            // Registrar el intento en el rate limiter
             rateLimiterService.recordFailedAttempt(rateLimitKey);
 
+            // Respuesta final simulada
             Map<String, String> response = new HashMap<>();
             response.put("message", "Si el correo está registrado, recibirás un enlace de recuperación.");
             response.put("simulacion_email", "Email registrado correctamente");
