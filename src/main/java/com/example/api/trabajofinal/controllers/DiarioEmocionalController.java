@@ -15,7 +15,7 @@ import java.util.Map;
 @RequestMapping("/api/diario-emocional")
 public class DiarioEmocionalController {
 
-    @Autowired
+    @Autowired // es usado para que Spring instancie y proporcione la implementación de DiarioEmocionalService automáticamente
     private DiarioEmocionalService diarioEmocionalService;
 
     @GetMapping("/preguntas-diarias/{niñoId}")
@@ -68,7 +68,7 @@ public class DiarioEmocionalController {
 
         try {
             List<DiarioEmocionalDTO> entradas = diarioEmocionalService
-                    .obtenerEntradasPorRangoFechas(niñoId, startDate, endDate);
+                    .obtenerEntradasPorRangoFechas(niñoId, startDate, endDate); // Uso de @DateTimeFormat para Spring
 
             if (entradas.isEmpty()) {
                 return ResponseEntity.ok()
