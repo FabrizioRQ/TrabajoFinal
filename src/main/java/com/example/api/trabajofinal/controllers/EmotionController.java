@@ -25,7 +25,7 @@ public class EmotionController {
     private NiñoService niñoService;
 
     @PostMapping("/analizar-emocion")
-    @PreAuthorize("hasAnyRole('USER','PSICOLOGO','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PSICOLOGO','ADMIN')") // Para asegurar que solo usuarios autenticados con los roles adecuados ('USER', 'PSICOLOGO', 'ADMIN') puedan acceder a los endpoints
     public ResponseEntity<?> analizarEmocion(@RequestBody Map<String, String> request) {
         try {
             String texto = request.get("texto");
@@ -96,7 +96,7 @@ public class EmotionController {
             return ResponseEntity.badRequest().body("Error obteniendo emociones: " + e.getMessage());
         }
     }
-
+    //Revisión de Lógica: Se confirma el uso de 'switch' para la generación de mensajes de intervención basados en emociones clave
     private String generarMensajeIntervencion(String emocion) {
         switch (emocion) {
             case "ESTRES":
