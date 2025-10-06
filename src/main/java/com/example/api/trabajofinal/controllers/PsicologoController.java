@@ -25,6 +25,7 @@ public class PsicologoController {
     }
 
     @GetMapping("/{id}")
+    // Revisión: Se verifica el manejo de 404 mediante el método isPresent() del Optional
     public ResponseEntity<?> obtenerPsicologo(@PathVariable Long id) {
         Optional<PsicologoDTO> psicologo = psicologoService.obtenerPsicologoPorId(id);
         if (psicologo.isPresent()) {
