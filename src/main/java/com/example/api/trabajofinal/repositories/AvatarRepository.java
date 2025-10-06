@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
+  // Puedes agregar métodos personalizados aquí, por ejemplo:
+  // Optional<Avatar> findByNombre(String nombre);
 }
